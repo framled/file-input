@@ -1,5 +1,6 @@
 # \<file-input\>
 
+A custom file input builded with polymer 2.0 class based
 
 ## Install with bower
 
@@ -43,3 +44,7 @@ A fancy element for select a image
 ```html
 <image-input></image-input>
 ```
+
+## License
+
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt) (C) Copyright.
