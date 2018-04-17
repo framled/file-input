@@ -1,0 +1,114 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+
+<!--
+A comment describing this element
+
+Example:
+
+    <my-elem></my-elem>
+
+Example:
+
+    <my-elem>
+      <h2>Hello my-elem</h2>
+    </my-elem>
+
+@demo demo/index.html
+-->
+
+<dom-module id="image-input">
+  <template>
+    <style is="custom-style">
+      :host {
+        display: block;
+      }
+
+      .image {
+        width: var(--image-input-width, 128px);
+        height: var(--image-input-width, 128px);
+        border-radius: var(--image-input-radius, 50%);
+        background: var(--image-input-background);
+        background-position: center;
+        background-size: 100%;
+        position: relative;
+
+        @apply --layout-vertical;
+        @apply --layout-center-center;
+      }
+      
+      .image:hover {
+        background: var(--image-input-background-hover);
+        cursor: pointer;
+      }
+
+      .image:hover iron-icon{
+        display: block;
+      }
+
+      iron-icon {
+        display: none;
+        color: white;
+        --iron-icon-width: 40%;
+        --iron-icon-height: 40%;
+      }
+    </style>
+    <file-input on-changed-files="pickImage" required="[[required]]">
+      <div slot="input-button" class="image">
+        <paper-ripple></paper-ripple>
+        <iron-icon icon="image:camera-alt"></iron-icon>
+      </div>
+    </file-input>
+  </template>
+  <script>
+    class ImageInput extends Polymer.Element {
+      static get is() {return 'image-input';}
+
+      static get properties() {
+        return {
+          icon: {
+            type: String,
+            value: 'image:camera-alt',
+          },
+
+          defaultImage: {
+            type: String,
+          },
+
+          name: {
+            type: String,
+          },
+
+          value: {
+            type: String,
+          },
+        };
+      }
+
+      pickImage(event, detail) {
+        if (detail.length > 0) {
+          const image = window.URL.createObjectURL(detail.item(0));
+          this.updateStyles({
+            '--image-input-background': `url('${image}')`,
+            '--image-input-background-hover':
+              `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+              url('${image}')`,
+          });
+          this.set('value', image);
+        }
+      }
+
+      validate() {
+        if (this.required) {
+          return this.value ? true : false;
+        }
+        return true;
+      }
+    }
+    window.customElements.define(ImageInput.is, ImageInput);
+  </script>
+</dom-module>

@@ -2,7 +2,11 @@
   "name": "file-input",
   "main": "file-input.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-button": "PolymerElements/paper-button#^2.1.0",
+    "paper-ripple": "PolymerElements/paper-ripple#^2.1.0",
+    "iron-icons": "PolymerElements/iron-icons#^2.1.1",
+    "iron-icon": "PolymerElements/iron-icon#^2.1.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

@@ -26,27 +26,33 @@
     </test-fixture>
 
     <script>
+      // eslint-disable-next-line no-undef
       suite('file-input', () => {
-
+        // eslint-disable-next-line no-undef
         test('instantiating the element with default properties works', () => {
+          // eslint-disable-next-line no-undef
           const element = fixture('BasicTestFixture');
+          // eslint-disable-next-line no-undef
           assert.equal(element.prop1, 'file-input');
           const elementShadowRoot = element.shadowRoot;
           const elementHeader = elementShadowRoot.querySelector('h2');
+          // eslint-disable-next-line no-undef
           assert.equal(elementHeader.innerHTML, 'Hello file-input!');
         });
 
+        // eslint-disable-next-line no-undef
         test('setting a property on the element works', () => {
           // Create a test fixture
+          // eslint-disable-next-line no-undef
           const element = fixture('ChangedPropertyTestFixture');
+          // eslint-disable-next-line no-undef
           assert.equal(element.prop1, 'new-prop1');
           const elementShadowRoot = element.shadowRoot;
           const elementHeader = elementShadowRoot.querySelector('h2');
+          // eslint-disable-next-line no-undef
           assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
         });
-
       });
     </script>
-
   </body>
 </html>

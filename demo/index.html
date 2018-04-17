@@ -10,7 +10,9 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../file-input.html">
+    <link rel="import" href="../image-input.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -22,7 +24,15 @@
       <h3>Basic file-input demo</h3>
       <demo-snippet>
         <template>
-          <file-input></file-input>
+          <file-input>
+            <paper-button slot="input-button">upload</paper-button>
+          </file-input>
+        </template>
+      </demo-snippet>
+
+      <demo-snippet>
+        <template>
+          <image-input></image-input>
         </template>
       </demo-snippet>
     </div>

@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="../paper-button/paper-button.html">
 
 <dom-module id="file-input">
   <template>
@@ -14,23 +16,28 @@
     <input
       id="input"
       type="file"
-      hidden
       accept="[[accept]]"
       on-change="_filesChanged"
-      multiple="[[multiple]]">
+      multiple="[[multiple]]"
+      required="[[required]]"
+      hidden>
+
+    <slot id="slot" name="input-button">
+      <paper-button on-click="pick">Choose File</paper-button>
+    </slot>
   </template>
 
   <script>
     /**
      * `input-file`
-     * 
+     *
      *
      * @customElement
      * @polymer
      * @demo demo/index.html
      */
     class FileInput extends Polymer.Element {
-      static get is() { return 'file-input'; }
+      static get is() {return 'file-input';}
       static get properties() {
         return {
           /**
@@ -39,17 +46,18 @@
           multiple: {
             type: Boolean,
             reflectToAttribute: true,
-            value: false
+            value: false,
           },
 
           /**
            * Acceptable file types can be specified with the accept attribute,
-           * which takes a comma-separated list of allowed file extensions or MIME types.
+           * which takes a comma-separated list of allowed file extensions
+           * or MIME types.
            */
           accept: {
             type: String,
             reflectToAttribute: true,
-          }
+          },
 
           /**
            * Array of files
@@ -57,15 +65,52 @@
           files: {
             type: Array,
             value: () => [],
-          }
+          },
         };
       }
 
-      _filesChanged() {
-        this.uploadFiles(e.target.files);
+      connectedCallback() {
+        super.connectedCallback();
+
+        this._observer = new Polymer.FlattenedNodesObserver(this.$.slot, (info) => {
+          this._addedInputButton(info.addedNodes);
+          this._removedInputButton(info.removedNodes);
+        });
       }
 
-      uploadFiles(files){
+      _addedInputButton(nodes) {
+        const inputButtons = this._getElementNodes(nodes);
+        if (inputButtons.length > 0) {
+          inputButtons[0].addEventListener('click', this.pick.bind(this));
+        }
+      }
+
+      _removedInputButton(nodes) {
+        const inputButtons = this._getElementNodes(nodes);
+        if (inputButtons.length > 0) {
+          inputButtons[0].removeEventListener('click', this.pick.bind(this));
+        }
+      }
+
+      _getElementNodes(nodes) {
+        return nodes.filter((node) => (node.nodeType === Node.ELEMENT_NODE));
+      }
+
+      pick(event) {
+        this.$.input.click();
+        event.preventDefault();
+      }
+
+      _filesChanged(event) {
+        this.uploadFiles(event.target.files);
+      }
+
+      uploadFiles(files) {
+        this.dispatchEvent(
+          new CustomEvent('changed-files', {
+            bubbles: true, composed: true, detail: files,
+          })
+        );
         this.set('files', files);
       }
     }
