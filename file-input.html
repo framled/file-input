@@ -1,0 +1,75 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="file-input">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      [hidden] {
+        display: none;
+      }
+    </style>
+    <input
+      id="input"
+      type="file"
+      hidden
+      accept="[[accept]]"
+      on-change="_filesChanged"
+      multiple="[[multiple]]">
+  </template>
+
+  <script>
+    /**
+     * `input-file`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FileInput extends Polymer.Element {
+      static get is() { return 'file-input'; }
+      static get properties() {
+        return {
+          /**
+           * Whether accept multiple files
+           */
+          multiple: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
+
+          /**
+           * Acceptable file types can be specified with the accept attribute,
+           * which takes a comma-separated list of allowed file extensions or MIME types.
+           */
+          accept: {
+            type: String,
+            reflectToAttribute: true,
+          }
+
+          /**
+           * Array of files
+           */
+          files: {
+            type: Array,
+            value: () => [],
+          }
+        };
+      }
+
+      _filesChanged() {
+        this.uploadFiles(e.target.files);
+      }
+
+      uploadFiles(files){
+        this.set('files', files);
+      }
+    }
+
+    window.customElements.define(FileInput.is, FileInput);
+  </script>
+</dom-module>
