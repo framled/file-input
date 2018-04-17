@@ -2,6 +2,23 @@
 <link rel="import" href="../polymer/lib/utils/flattened-nodes-observer.html">
 <link rel="import" href="../paper-button/paper-button.html">
 
+<!--
+
+`file-input` is a input for files. Render a custom input file and return the file choosed
+
+Example:
+
+    <file-input>Flat button</file-input>
+    <file-input>
+      <paper-button>
+        <iron-icon icon="upload"></iron-icon>
+        Choose file
+      </paper-button>
+    </file-input>
+
+@demo demo/index.html
+-->
+
 <dom-module id="file-input">
   <template>
     <style>
@@ -23,7 +40,7 @@
       hidden>
 
     <slot id="slot" name="input-button">
-      <paper-button on-click="pick">Choose File</paper-button>
+      <paper-button on-click="_pick">Choose File</paper-button>
     </slot>
   </template>
 
@@ -78,6 +95,11 @@
         });
       }
 
+      _pick(event) {
+        this.$.input.click();
+        event.preventDefault();
+      }
+
       _addedInputButton(nodes) {
         const inputButtons = this._getElementNodes(nodes);
         if (inputButtons.length > 0) {
@@ -96,16 +118,8 @@
         return nodes.filter((node) => (node.nodeType === Node.ELEMENT_NODE));
       }
 
-      pick(event) {
-        this.$.input.click();
-        event.preventDefault();
-      }
-
       _filesChanged(event) {
-        this.uploadFiles(event.target.files);
-      }
-
-      uploadFiles(files) {
+        const files = event.target.files;
         this.dispatchEvent(
           new CustomEvent('changed-files', {
             bubbles: true, composed: true, detail: files,

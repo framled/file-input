@@ -4,19 +4,43 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/image-icons.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
-
 <!--
-A comment describing this element
+`file-input` is a input for images. Render a custom input file and return the file choosed
 
 Example:
 
-    <my-elem></my-elem>
+    <image-input></image-input>
 
-Example:
+### Styling
 
-    <my-elem>
-      <h2>Hello my-elem</h2>
-    </my-elem>
+Style the button with CSS as you would a normal DOM element.
+
+    paper-button.fancy {
+      background: green;
+      color: yellow;
+    }
+
+    paper-button.fancy:hover {
+      background: lime;
+    }
+
+    paper-button[disabled],
+    paper-button[toggles][active] {
+      background: red;
+    }
+
+By default, the ripple is the same color as the foreground at 25% opacity. You may
+customize the color using the `--paper-button-ink-color` custom property.
+
+The following custom properties and mixins are also available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--image-input-width` | Width of viewer image | `128px`
+`--image-input-height` | Height of viewer image | `128px`
+`--image-input-radius` | Radios applied for image style | `50%`
+`--image-input-background` | style for background | ``
+`--image-input-background-hover` | Style applied when hover | ``
 
 @demo demo/index.html
 -->
@@ -30,7 +54,7 @@ Example:
 
       .image {
         width: var(--image-input-width, 128px);
-        height: var(--image-input-width, 128px);
+        height: var(--image-input-height, 128px);
         border-radius: var(--image-input-radius, 50%);
         background: var(--image-input-background);
         background-position: center;
@@ -57,7 +81,7 @@ Example:
         --iron-icon-height: 40%;
       }
     </style>
-    <file-input on-changed-files="pickImage" required="[[required]]">
+    <file-input on-changed-files="_pickImage" required="[[required]]">
       <div slot="input-button" class="image">
         <paper-ripple></paper-ripple>
         <iron-icon icon="image:camera-alt"></iron-icon>
@@ -70,26 +94,36 @@ Example:
 
       static get properties() {
         return {
+          /**
+           * icon applied when hover, default image:camera-alt
+           */
           icon: {
             type: String,
             value: 'image:camera-alt',
           },
-
+          /**
+           * default image for background when is no image selected
+           */
           defaultImage: {
             type: String,
           },
 
+          /**
+           * name for form
+           */
           name: {
             type: String,
           },
-
+          /*
+           * file selected
+           */
           value: {
             type: String,
           },
         };
       }
 
-      pickImage(event, detail) {
+      _pickImage(event, detail) {
         if (detail.length > 0) {
           const image = window.URL.createObjectURL(detail.item(0));
           this.updateStyles({
@@ -102,6 +136,9 @@ Example:
         }
       }
 
+      /**
+       * Validate whether is required
+       */
       validate() {
         if (this.required) {
           return this.value ? true : false;

@@ -9,22 +9,37 @@ First, make sure you have the [Bower](https://bower.io) installed. Then run the 
 $ bower install framled/file-input --save
 ```
 
-## Usage
-
-
-## Demo
+## example:
 
 <!--
 ```
 <custom-element-demo>
 	<template>
-		<link rel="import" href="input-file.html">
-		<next-code-blocl></next-code-block>
+		<link rel="import" href="file-input.html">
+		<link rel="import" href="image-input.html">
+		<next-code-block></next-code-block>
 	</template>
 </custom-element-demo>
 ```
 -->
 
+You can use a `<file-input>` element for use import files, for default file-input use a paper button
+
 ```html
 <file-input></file-input>
+```
+
+you can use a custom input-button slot
+```html
+<file-input>
+	<paper-button slot="input-button">
+		<iron-icon></iron-icon>
+		Choose File
+	</paper-button>
+</file-input>
+```
+
+A fancy element for select a image
+```html
+<image-input></image-input>
 ```
