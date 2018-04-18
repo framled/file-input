@@ -52,21 +52,25 @@ Custom property | Description | Default
         display: block;
       }
 
-      .image {
+      .container {
         width: var(--image-input-width, 128px);
         height: var(--image-input-height, 128px);
+        @apply --layout-vertical;
+        @apply --layout-center-center;
+      }
+
+      .image {
         border-radius: var(--image-input-radius, 50%);
         background: var(--image-input-background);
         background-position: center;
         background-size: 100%;
         position: relative;
-
-        @apply --layout-vertical;
-        @apply --layout-center-center;
       }
       
-      .image:hover {
+      .container:hover {
         background: var(--image-input-background-hover);
+        background-position: center;
+        background-size: 100%;
         cursor: pointer;
       }
 
@@ -82,7 +86,7 @@ Custom property | Description | Default
       }
     </style>
     <file-input on-changed-files="_pickImage" required="[[required]]">
-      <div slot="input-button" class="image">
+      <div slot="input-button" class="container image">
         <paper-ripple></paper-ripple>
         <iron-icon icon="image:camera-alt"></iron-icon>
       </div>
@@ -106,6 +110,7 @@ Custom property | Description | Default
            */
           defaultImage: {
             type: String,
+            observer: '_defaultImageChanged'
           },
 
           /**
@@ -126,14 +131,22 @@ Custom property | Description | Default
       _pickImage(event, detail) {
         if (detail.length > 0) {
           const image = window.URL.createObjectURL(detail.item(0));
-          this.updateStyles({
+          this._changeImage(image);
+          this.set('value', image);
+        }
+      }
+
+      _defaultImageChanged(event) {
+        this._changeImage(event);
+      }
+
+      _changeImage(image) {
+        this.updateStyles({
             '--image-input-background': `url('${image}')`,
             '--image-input-background-hover':
               `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
               url('${image}')`,
           });
-          this.set('value', image);
-        }
       }
 
       /**

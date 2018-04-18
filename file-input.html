@@ -103,14 +103,14 @@ Example:
       _addedInputButton(nodes) {
         const inputButtons = this._getElementNodes(nodes);
         if (inputButtons.length > 0) {
-          inputButtons[0].addEventListener('click', this.pick.bind(this));
+          inputButtons[0].addEventListener('click', this._pick.bind(this));
         }
       }
 
       _removedInputButton(nodes) {
         const inputButtons = this._getElementNodes(nodes);
         if (inputButtons.length > 0) {
-          inputButtons[0].removeEventListener('click', this.pick.bind(this));
+          inputButtons[0].removeEventListener('click', this._pick.bind(this));
         }
       }
 
