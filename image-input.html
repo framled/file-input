@@ -132,9 +132,10 @@ Custom property | Description | Default
 
       _pickImage(event, detail) {
         if (detail.length > 0) {
-          const image = window.URL.createObjectURL(detail.item(0));
-          this._changeImage(image);
-          this.set('value', image);
+          const file = detail.item(0);
+          const url = window.URL.createObjectURL(file);
+          this._changeImage(url);
+          this.set('value', file);
         }
       }
 
