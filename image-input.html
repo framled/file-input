@@ -176,7 +176,8 @@ Custom property | Description | Default
       }
 
       computeUrl(value) {
-        if (value && typeof value !== 'string') {
+        if (!(Object.keys(value).length === 0 && value.constructor === Object) 
+          && typeof value !== 'string') {
           return window.URL.createObjectURL(value);
         }
         return this.placeholder;
