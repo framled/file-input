@@ -10,29 +10,115 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-form/iron-form.html">
     <link rel="import" href="../../paper-button/paper-button.html">
     <link rel="import" href="../file-input.html">
     <link rel="import" href="../image-input.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
+        image-input {
+          --image-input-width: 128px;
+          --image-input-height: 128px;
+        }
+        image-input.circle {
+          --image-input-width: 128px;
+          --image-input-height: 128px;
+          --image-input: {
+            border-radius: 50%;
+          };
+        }
+        image-input.top-left {
+          --image-input-width: 128px;
+          --image-input-height: 128px;
+          --image-input-button: {
+            left: -16px;
+            top: -16px;
+            right: auto;
+            bottom: auto;
+          };
+        }
       </style>
     </custom-style>
   </head>
   <body>
     <div class="vertical-section-container centered">
       <h3>Basic file-input demo</h3>
-      <demo-snippet>
+      <demo-snippet class="centered-demo">
         <template>
           <file-input>
             <paper-button slot="input-button">upload</paper-button>
           </file-input>
         </template>
       </demo-snippet>
-
-      <demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>A fancy image-input with a circle placeholder demo</h3>
+      <demo-snippet class="centered-demo">
         <template>
-          <image-input default-image="https://dummyimage.com/128x128/000000/fff.png&text=image-file"></image-input>
+          <style>
+            image-input.circle {
+              --image-input-width: 128px;
+              --image-input-height: 128px;
+              --image-input: {
+                border-radius: 50%;
+              };
+            }
+          </style>
+          <image-input
+            class="circle"
+            position="center"
+            sizing="cover"
+            width="128" height="128"
+            preload
+            fade
+            placeholder="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACABAMAAAAxEHz4AAAAG1BMVEUAAAD///9/f38/Pz8fHx9fX1+/v7+fn5/f39+rr0+4AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABWUlEQVRoge2TT2+CMBiHX6GoR5L5AYhu6pGEiNduYQlHIod5NNvsdjRmsqvb9Huv4CYVyp9l199zIPBr+7xt30AEAAAAAAAAAACAdhhO/fh4nU6pmdUg6L2xBkEDnVZlaggbBSZn7iJiQ5doNhkR3W3diMzJtSIweSrIs0sMxxjHWz9+JGsdLyPr6L0fKImXbjaafIjfSzxnZcEV9Z9PezVXfVltYGyI7fMdZAIlKwk21HVIrpTYvnwM0vengkDJSgKHehF1ObHZ0J6nlvTqdxQEXBGcsnrBeOTZISdrdSuE+DSFPH4uyLJ6gTwK2cbRm/IwHz4LQt3iS4E8JbP797KhHY2g00pg2Nldys+SQMmqBD2HHvbmq9gR+yLiBYGSVQmYSJw9EZuvyH9JNgWBklXCfirIdgeaYrpMj7bdf4Ad/rPav/Gm2n+mdfnFtqpfAAAAAAAAANCKb8w3PQYNl7XnAAAAAElFTkSuQmCC"></image-input>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>A fancy image-input with button at top left demo</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+          <style>
+            image-input.top-left {
+              --image-input-width: 128px;
+              --image-input-height: 128px;
+              --image-input-button: {
+                left: -16px;
+                top: -16px;
+                right: auto;
+                bottom: auto;
+              };
+            }
+          </style>
+          <image-input
+            class="top-left"
+            position="center"
+            preload
+            fade
+            placeholder="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACABAMAAAAxEHz4AAAAG1BMVEUAAAD///9/f38/Pz8fHx9fX1+/v7+fn5/f39+rr0+4AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABWUlEQVRoge2TT2+CMBiHX6GoR5L5AYhu6pGEiNduYQlHIod5NNvsdjRmsqvb9Huv4CYVyp9l199zIPBr+7xt30AEAAAAAAAAAACAdhhO/fh4nU6pmdUg6L2xBkEDnVZlaggbBSZn7iJiQ5doNhkR3W3diMzJtSIweSrIs0sMxxjHWz9+JGsdLyPr6L0fKImXbjaafIjfSzxnZcEV9Z9PezVXfVltYGyI7fMdZAIlKwk21HVIrpTYvnwM0vengkDJSgKHehF1ObHZ0J6nlvTqdxQEXBGcsnrBeOTZISdrdSuE+DSFPH4uyLJ6gTwK2cbRm/IwHz4LQt3iS4E8JbP797KhHY2g00pg2Nldys+SQMmqBD2HHvbmq9gR+yLiBYGSVQmYSJw9EZuvyH9JNgWBklXCfirIdgeaYrpMj7bdf4Ad/rPav/Gm2n+mdfnFtqpfAAAAAAAAANCKb8w3PQYNl7XnAAAAAElFTkSuQmCC"></image-input>
+        </template>
+      </demo-snippet>
+    </div>
+    <div class="vertical-section-container centered">
+      <h3>A fancy image-input with button at top left demo</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+            <image-input
+              id="ii2"
+              url="[[imageUrl]]"
+              placeholder="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACABAMAAAAxEHz4AAAAG1BMVEUAAAD///9/f38/Pz8fHx9fX1+/v7+fn5/f39+rr0+4AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABWUlEQVRoge2TT2+CMBiHX6GoR5L5AYhu6pGEiNduYQlHIod5NNvsdjRmsqvb9Huv4CYVyp9l199zIPBr+7xt30AEAAAAAAAAAACAdhhO/fh4nU6pmdUg6L2xBkEDnVZlaggbBSZn7iJiQ5doNhkR3W3diMzJtSIweSrIs0sMxxjHWz9+JGsdLyPr6L0fKImXbjaafIjfSzxnZcEV9Z9PezVXfVltYGyI7fMdZAIlKwk21HVIrpTYvnwM0vengkDJSgKHehF1ObHZ0J6nlvTqdxQEXBGcsnrBeOTZISdrdSuE+DSFPH4uyLJ6gTwK2cbRm/IwHz4LQt3iS4E8JbP797KhHY2g00pg2Nldys+SQMmqBD2HHvbmq9gR+yLiBYGSVQmYSJw9EZuvyH9JNgWBklXCfirIdgeaYrpMj7bdf4Ad/rPav/Gm2n+mdfnFtqpfAAAAAAAAANCKb8w3PQYNl7XnAAAAAElFTkSuQmCC">
+              </image-input>
+            </iron-form>
+            <div>
+              image url: <span class="output"></span>
+            </div>
+            <script>
+              ii2.addEventListener('changed-files', function(event) {
+                document.querySelector('.output').innerHTML = JSON.stringify(event.target.url);
+              });
+            </script>
         </template>
       </demo-snippet>
     </div>

@@ -1,9 +1,10 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../iron-image/iron-image.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
 <link rel="import" href="file-input.html">
 
 <!--
@@ -38,11 +39,11 @@ The following custom properties and mixins are also available for styling:
 
 Custom property | Description | Default
 ----------------|-------------|----------
-`--image-input-width` | Width of viewer image | `128px`
-`--image-input-height` | Height of viewer image | `128px`
-`--image-input-radius` | Radios applied for image style | `50%`
-`--image-input-background` | style for background | ``
-`--image-input-background-hover` | Style applied when hover | ``
+`--image-input-width` | Width of viewer image | `auto`
+`--image-input-height` | Height of viewer image | `auto`
+`--image-input` | Radios applied for image style | `{}`
+`--image-input-button-background` | style for background | ``
+`--image-input-button | style for button | {}`
 
 @demo demo/index.html
 -->
@@ -54,45 +55,47 @@ Custom property | Description | Default
         display: block;
       }
 
-      .container {
-        width: var(--image-input-width, 128px);
-        height: var(--image-input-height, 128px);
-        @apply --layout-vertical;
-        @apply --layout-center-center;
-      }
-
-      .image {
-        border-radius: var(--image-input-radius, 50%);
-        background: var(--image-input-background);
-        background-position: center;
-        background-size: 100%;
+      div.container {
         position: relative;
-      }
-      
-      .container:hover {
-        background: var(--image-input-background-hover);
-        background-position: center;
-        background-size: 100%;
-        cursor: pointer;
+        width: fit-content;
       }
 
-      .image:hover iron-icon{
+      iron-image {
+        --iron-image-width: var(--image-input-width, auto);
+        --iron-image-height: var(--image-input-height, auto);
+        @apply --image-input;
+      }
+
+      paper-fab {
         display: block;
-      }
+        position: absolute;
+        cursor: pointer;
+        right: 0px;
+        bottom: 0px;
 
-      iron-icon {
-        display: none;
-        color: white;
-        --iron-icon-width: 40%;
-        --iron-icon-height: 40%;
+        --paper-fab-background: var(--image-input-button-background);
+        @apply --image-input-button;
       }
     </style>
-    <file-input on-changed-files="_pickImage" required="[[required]]">
-      <div slot="input-button" class="container image">
-        <paper-ripple></paper-ripple>
-        <iron-icon icon="image:camera-alt"></iron-icon>
-      </div>
-    </file-input>
+    <div class="container">
+      <iron-image
+        src="[[url]]"
+        placeholder="[[placeHolder]]"
+        sizing="[[sizing]]"
+        preload="[[preload]]"
+        fade="[[fade]]"
+        alt="[[alt]]"
+        width="[[width]]"
+        height="[[height]]">
+      </iron-image>
+      <file-input on-changed-files="_pickImage" required="[[required]]">
+        <paper-fab
+          slot="input-button"
+          mini
+          icon="[[icon]]">
+        </paper-fab>
+      </file-input>
+    </div>
   </template>
   <script>
     class ImageInput extends Polymer.Element {
@@ -101,6 +104,19 @@ Custom property | Description | Default
       static get properties() {
         return {
           /**
+           * A short text alternative for the image.
+           * see https://www.webcomponents.org/element/PolymerElements/iron-image/elements/iron-image
+           */
+          alt: String,
+          /**
+           * When preload is true, setting fade to true will cause the image to fade into place.
+           * see https://www.webcomponents.org/element/PolymerElements/iron-image/elements/iron-image
+           */
+          fade: {
+            type: Boolean,
+            value: false
+          },
+          /**
            * icon applied when hover, default image:camera-alt
            */
           icon: {
@@ -108,48 +124,73 @@ Custom property | Description | Default
             value: 'image:camera-alt',
           },
           /**
-           * default image for background when is no image selected
-           */
-          defaultImage: {
-            type: String,
-            observer: '_defaultImageChanged'
-          },
-
-          /**
            * name for form
            */
           name: {
+            type: String,
+          },
+          /**
+           * default image for background when is no image selected
+           * see https://www.webcomponents.org/element/PolymerElements/iron-image/elements/iron-image
+           */
+          placeholder: {
+            type: String,
+            observer: '_placeholderChanged'
+          },
+          /**
+           * When true, any change to the src property will cause the placeholder image to be shown until the new image has loaded.
+           * see https://www.webcomponents.org/element/PolymerElements/iron-image/elements/iron-image
+           */
+          preload: {
+            type: Boolean,
+            value: false,
+          },
+          /**
+           * Sets a sizing option for the image. Valid values are contain
+           * (full aspect ratio of the image is contained within the element
+           * and letterboxed) or cover (image is * cropped in order to fully
+           * cover the bounds of the element), or null (default: image takes
+           * natural size).
+           * see https://www.webcomponents.org/element/PolymerElements/iron-image/elements/iron-image
+           */
+          sizing: {
             type: String,
           },
           /*
            * file selected
            */
           value: {
-            type: String,
+            type: Object,
+            value: () => (undefined),
           },
+          /**
+           * Url for selected image
+           */
+          url: {
+            type: String,
+            computed: 'computeUrl(value)',
+          },
+          width: Number,
+          height: Number,
         };
+      }
+
+      computeUrl(value) {
+        if (value && typeof value !== 'string') {
+          return window.URL.createObjectURL(value);
+        }
+        return this.placeholder;
       }
 
       _pickImage(event, detail) {
         if (detail.length > 0) {
           const file = detail.item(0);
-          const url = window.URL.createObjectURL(file);
-          this._changeImage(url);
           this.set('value', file);
         }
       }
 
-      _defaultImageChanged(event) {
-        this._changeImage(event);
-      }
-
-      _changeImage(image) {
-        this.updateStyles({
-            '--image-input-background': `url('${image}')`,
-            '--image-input-background-hover':
-              `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-              url('${image}')`,
-          });
+      _placeholderChanged(event) {
+        this.set('value', event);
       }
 
       /**
